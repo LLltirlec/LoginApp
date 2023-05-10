@@ -73,9 +73,7 @@ final class LoginViewController: UIViewController {
         let okAction = UIAlertAction(
             title: "OK",
             style: .default
-        ) { _ in
-            self.passwordTextField.text = ""
-        }
+        ) { _ in self.passwordTextField.text = "" }
         alert.addAction(okAction)
         present(alert, animated: true)
     }
