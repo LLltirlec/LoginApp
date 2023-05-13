@@ -9,31 +9,38 @@ import UIKit
 
 final class LoginViewController: UIViewController {
 
-    private var userName = "User"
-    private var password = "Password"
-    
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-
+    
+    private let profile = User.testUser()
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let userVC = segue.destination as? UserViewController else { return }
-        userVC.user = userName
+        guard let tabBar = segue.destination as? UITabBarController else { return }
+        guard let welcomeVC = tabBar.viewControllers?[0] as? WelcomeViewController else { return }
+        
+        welcomeVC.profile = profile.person
+        
+        guard let navC = tabBar.viewControllers?[1] as? UINavigationController else { return }
+        guard let userVC = navC.viewControllers[0] as? UserViewController else { return }
+        
+        userVC.profile = profile.person
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
         super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
     
     override func shouldPerformSegue(
         withIdentifier identifier: String,
         sender: Any?
     ) -> Bool {
-        guard userNameTextField.text == userName,
-              passwordTextField.text == password else {
+        guard userNameTextField.text == profile.userName,
+              passwordTextField.text == profile.password else {
                 showAlert(
                     withTitle: "Invalid login or password",
-                    withMessage: "Please enter correct login and password"
+                    withMessage: "Please enter correct login and password",
+                    textField: passwordTextField
                 )
                 return false
             }
@@ -42,18 +49,15 @@ final class LoginViewController: UIViewController {
     }
     
     @IBAction func forgotAction(_ sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            showAlert(
+        sender.tag == 0
+           ? showAlert(
                 withTitle: "Ooops!",
-                withMessage: "Your username is \(userName)"
+                withMessage: "Your username is \(profile.userName)"
             )
-        default:
-            showAlert(
+        : showAlert(
                 withTitle: "Ooops!",
-                withMessage: "Your password is \(password)"
+                withMessage: "Your password is \(profile.password)"
             )
-        }
     }
     
     @IBAction func unwind(for unwindSegue: UIStoryboardSegue) {
@@ -63,7 +67,8 @@ final class LoginViewController: UIViewController {
     
     private func showAlert(
         withTitle title: String,
-        withMessage message: String
+        withMessage message: String,
+        textField: UITextField? = nil
     ) {
         let alert = UIAlertController(
             title: title,
@@ -73,7 +78,7 @@ final class LoginViewController: UIViewController {
         let okAction = UIAlertAction(
             title: "OK",
             style: .default
-        ) { _ in self.passwordTextField.text = "" }
+        ) { _ in textField?.text = "" }
         alert.addAction(okAction)
         present(alert, animated: true)
     }
