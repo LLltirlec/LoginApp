@@ -65,20 +65,11 @@ final class LoginViewController: UIViewController {
         passwordTextField.text = ""
     }
     
-    private func showAlert(
-        withTitle title: String,
-        withMessage message: String,
-        textField: UITextField? = nil
-    ) {
-        let alert = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
-        let okAction = UIAlertAction(
-            title: "OK",
-            style: .default
-        ) { _ in textField?.text = "" }
+    private func showAlert( withTitle title: String, withMessage message: String, textField: UITextField? = nil) {
+        let alert = UIAlertController( title: title, message: message, preferredStyle: .alert )
+        let okAction = UIAlertAction( title: "OK", style: .default) { _ in
+            textField?.text = ""
+        }
         alert.addAction(okAction)
         present(alert, animated: true)
     }

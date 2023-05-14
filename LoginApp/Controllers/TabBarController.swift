@@ -17,6 +17,9 @@ class TabBarController: UITabBarController {
         return bounceAnimation
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }
 
 extension TabBarController: UITabBarControllerDelegate {

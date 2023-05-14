@@ -49,7 +49,7 @@ final class UserViewController: UIViewController {
     }
 
     private func loadDataAboutUser() {
-        HeaderNavigationController.title = "\(profile.name) \(profile.name)"
+        HeaderNavigationController.title = "\(profile.name) \(profile.surname)"
         nameLabel.text = profile.name
         surnameLabel.text = profile.surname
         companyLabel.text = profile.company
